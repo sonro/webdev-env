@@ -1,9 +1,5 @@
 <?php
 readfile('./includes/mainHead.html');
-?>
-
-    <h1>php</h1>
-
-<?php
+include('./includes/mainHome.php');
 readfile('./includes/mainFoot.html');
 ?>
