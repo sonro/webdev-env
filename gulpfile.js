@@ -33,7 +33,7 @@ gulp.task('scripts', function() {
 
 gulp.task('serve', ['markup', 'styles', 'scripts'], function() {
     bSync.init({
-        open: 'external',
+        open: false,
         host: 'localhost',
         proxy: 'localhost',
         // port: 80
