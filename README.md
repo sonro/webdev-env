@@ -7,3 +7,5 @@ Install packages `npm install`
 Setup symbiotic link to a "src" directory `ln -s [source-directory] src`  
 
 Make sure apache is running and then start deveopment `gulp`
+
+Check
