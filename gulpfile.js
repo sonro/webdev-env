@@ -2,9 +2,14 @@ var gulp    = require('gulp'),
     sass    = require('gulp-sass'),
     plumber = require('gulp-plumber'),
     bSync   = require('browser-sync'),
+    del     = require('del'),
     gSync   = require('gulp-sync')(gulp);
 
 gulp.task('default', ['serve', 'watch']);
+
+gulp.task('clean', fucntion() {
+    return del('./html/**./*');
+}
 
 gulp.task('markup', function() {
     gulp.src('./src/**/*.php')
