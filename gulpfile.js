@@ -7,9 +7,9 @@ var gulp    = require('gulp'),
 
 gulp.task('default', ['serve', 'watch']);
 
-gulp.task('clean', fucntion() {
-    return del('./html/**./*');
-}
+gulp.task('clean', function() {
+    return del(['./html/**/*']);
+});
 
 gulp.task('markup', function() {
     gulp.src('./src/**/*.php')
