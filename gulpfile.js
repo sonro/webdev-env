@@ -22,6 +22,12 @@ gulp.task('markup', function() {
 
 });
 
+gulp.task('data', function() {
+    gulp.src('./src/assets/data/**/*')
+        .pipe(gulp.dest('./html/assets/data'));
+    bSync.reload();
+});
+
 gulp.task('styles', function() {
     gulp.src('./src/assets/scss/app.scss')
         .pipe(sass().on('error', sass.logError))
@@ -36,7 +42,7 @@ gulp.task('scripts', function() {
 });
 
 
-gulp.task('serve', ['markup', 'styles', 'scripts'], function() {
+gulp.task('serve', ['markup', 'data', 'styles', 'scripts'], function() {
     bSync.init({
         open: false,
         host: 'localhost',
@@ -56,6 +62,9 @@ gulp.task('watch', function() {
     // html/php files
     gulp.watch('./src/**/*.html', ['markup']); 
     gulp.watch('./src/**/*.php', ['markup']);
+
+    // data files
+    gulp.watch('./src/assets/data/**/*', ['data']);
 
     // sass
     gulp.watch('./src/assets/scss/**/*.scss', ['styles']);
