@@ -9,21 +9,21 @@ gulp.task('default', ['serve', 'watch']);
 
 gulp.task('publish', function() {
     gulp.src('./src/**/*.php')
-        .pipe(gulp.dest('./html'))
+        .pipe(gulp.dest('./pub'))
     
     gulp.src('./src/**/*.html')
-        .pipe(gulp.dest('./html'))
+        .pipe(gulp.dest('./pub'))
 
     gulp.src('./src/assets/data/**/*')
-        .pipe(gulp.dest('./html/assets/data'));
+        .pipe(gulp.dest('./pub/assets/data'));
 
     gulp.src('./src/assets/scss/app.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./html/assets/css'))
+        .pipe(gulp.dest('./pub/assets/css'))
 
     gulp.src('./src/assets/js/**/*.js')
         .pipe(plumber())
-        .pipe(gulp.dest('./html/assets/js'));
+        .pipe(gulp.dest('./pub/assets/js'));
 });
 
 gulp.task('clean', function() {
