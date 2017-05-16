@@ -2,3 +2,5 @@ node_modules/
 html/
 src/
 src
+pub
+pub/
