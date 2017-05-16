@@ -1,4 +1,6 @@
 var gulp    = require('gulp'),
+    gutil   = require('gulp-util'),
+    ftp     = require('vinyl-ftp'),
     sass    = require('gulp-sass'),
     plumber = require('gulp-plumber'),
     bSync   = require('browser-sync'),
@@ -7,27 +9,67 @@ var gulp    = require('gulp'),
 
 gulp.task('default', ['serve', 'watch']);
 
+
+var user = process.env.FTP_USER;  
+var password = process.env.FTP_PWD;  
+var host = 'files.000webhost.com';
+var port = 21; 
+var localFilesGlob = ['public_html/**/*'];  
+var remoteFolder = '/public_html';
+
+function getFtpConnection() {  
+    return ftp.create({
+        host: host,
+        port: port,
+        user: user,
+        password: password,
+        parallel: 1,
+        log: gutil.log
+    });
+}
+
+/**
+ * Deploy task
+ * Copies the new files to the server
+ *
+ * Usage: `FTP_USER=someuser FTP_PWD=somepwd gulp ftp-upload`
+ */
+gulp.task('ftp-upload', function() {
+
+    var conn = getFtpConnection();
+
+    return gulp.src(localFilesGlob, { base: './public_html', buffer: false })
+        // .pipe( conn.newer( remoteFolder ) ) // only upload newer files 
+        .pipe( conn.dest( remoteFolder ) );
+});
+
 gulp.task('publish', function() {
     gulp.src('./src/**/*.php')
-        .pipe(gulp.dest('./pub'))
+        .pipe(gulp.dest('./public_html'))
     
     gulp.src('./src/**/*.html')
-        .pipe(gulp.dest('./pub'))
+        .pipe(gulp.dest('./public_html'))
 
     gulp.src('./src/assets/data/**/*')
-        .pipe(gulp.dest('./pub/assets/data'));
+        .pipe(gulp.dest('./public_html/assets/data'));
 
     gulp.src('./src/assets/scss/app.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./pub/assets/css'))
+        .pipe(gulp.dest('./public_html/assets/css'))
 
     gulp.src('./src/assets/js/**/*.js')
         .pipe(plumber())
-        .pipe(gulp.dest('./pub/assets/js'));
+        .pipe(gulp.dest('./public_html/assets/js'));
 });
+
+gulp.task('deploy', gSync.sync(['publish', 'ftp-upload'], "Deploying"));
 
 gulp.task('clean', function() {
     return del(['./html/**/*']);
+});
+
+gulp.task('clean-pub', function() {
+    return del(['./public_html/**/*']);
 });
 
 gulp.task('markup', function() {
