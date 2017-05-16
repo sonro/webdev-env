@@ -7,6 +7,25 @@ var gulp    = require('gulp'),
 
 gulp.task('default', ['serve', 'watch']);
 
+gulp.task('publish', function() {
+    gulp.src('./src/**/*.php')
+        .pipe(gulp.dest('./html'))
+    
+    gulp.src('./src/**/*.html')
+        .pipe(gulp.dest('./html'))
+
+    gulp.src('./src/assets/data/**/*')
+        .pipe(gulp.dest('./html/assets/data'));
+
+    gulp.src('./src/assets/scss/app.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./html/assets/css'))
+
+    gulp.src('./src/assets/js/**/*.js')
+        .pipe(plumber())
+        .pipe(gulp.dest('./html/assets/js'));
+});
+
 gulp.task('clean', function() {
     return del(['./html/**/*']);
 });
